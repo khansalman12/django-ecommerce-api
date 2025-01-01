@@ -1,8 +1,15 @@
+# Ignore Python bytecode
 *.pyc
-_pycache__/
+__pycache__/
+
+# Ignore virtual environment
+.venv/
+
+# Ignore IDE and system files
 .idea/
 .DS_Store
-config/
+
+# Ignore everything in config except important.conf
+config/*
 !config/important.conf
-*.pyc
-.venv/
+
