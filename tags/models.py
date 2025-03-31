@@ -8,8 +8,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 # Create your models here.
 class Tag(models.Model):
     label = models.CharField(max_length=255)
+    def __str__(self):
+        return self.label
 
 class TaggedItem(models.Model):
+
     #what tag is applied to the object
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     # type(videos, article ,product)
@@ -17,3 +20,4 @@ class TaggedItem(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
