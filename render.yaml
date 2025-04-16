@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: django-ecommerce-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn storefront2.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        value: django-insecure-hs6j037urx6iav+7#10%-vu4l4f5@@-1_zo)oft4g7$vf2$jmp
+      - key: DEBUG
+        value: False
+      - key: DATABASE_URL
+        fromDatabase:
+          name: django_ecommerce_api_db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: "*.onrender.com,localhost,127.0.0.1"
+
+databases:
+  - name: django_ecommerce_api_db
+    databaseName: django_ecommerce_db
+    user: django_ecommerce_api
+    plan: free
