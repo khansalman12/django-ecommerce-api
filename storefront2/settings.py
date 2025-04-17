@@ -102,8 +102,10 @@ WSGI_APPLICATION = 'storefront2.wsgi.application'
 # Configure database for Heroku
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
+    # Disable SSL for local connections but enable it for production
+    is_local = 'localhost' in DATABASE_URL or '127.0.0.1' in DATABASE_URL
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=not is_local)
     }
 else:
     DATABASES = {
