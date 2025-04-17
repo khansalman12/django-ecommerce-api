@@ -32,8 +32,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-hs6j037urx6iav+7#10%-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# Allow all Heroku app URLs and localhost
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+# Allow Render domains and localhost
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -99,13 +99,19 @@ WSGI_APPLICATION = 'storefront2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# Configure database for Heroku
+# Configure database for Render
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     # Disable SSL for local connections but enable it for production
     is_local = 'localhost' in DATABASE_URL or '127.0.0.1' in DATABASE_URL
+    # For Render, ensure SSL is used in production
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=not is_local)
+        'default': dj_database_url.config(
+            default=DATABASE_URL, 
+            conn_max_age=600, 
+            ssl_require=not is_local,
+            conn_health_checks=True  # Enable connection health checks for Render
+        )
     }
 else:
     DATABASES = {
